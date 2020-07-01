@@ -7,7 +7,8 @@ const CACHE_STATIC = 'static-v4'
 const CACHE_INMUTABLE = 'inmutable-v1'
 // cosas estaticas pero q no controlamos, como boostrap por cdn
 
-const CACHE_DINAMIC = 'dinamic-v1'
+const CACHE_DINAMIC = 'dinamic-v2'
+
 // para cosas q vienen de internet q no tenemos en cache
 
 
@@ -46,6 +47,7 @@ self.addEventListener('install',event => {
                 '/css/style.css',
                 '/js/app.js',
                 '/img/main.jpg',
+                '/img/noimage.jpg'
     
             ])
         }),
@@ -75,31 +77,93 @@ self.addEventListener('fetch', e => {
 
 
 // estrategia cache with network fallback
-    const source = caches.match( e.request ).then( res => { 
+    // const source = caches.match( e.request ).then( res => { 
         
-        // si esta en cache, dale de ahi
-        if (res) return res
+    //     // si esta en cache, dale de ahi
+    //     if (res) return res
     
-        console.log('no existe en cache',e.request.url);
+    //     console.log('no existe en cache',e.request.url);
 
 
-        // si no, vete al internet
-        return fetch( e.request).then(res => {
+    //     // si no, vete al internet
+    //     return fetch( e.request).then(res => {
             
-            // y ya q te fuiste a internet, guardalo en cache
-            caches.open( CACHE_DINAMIC ).then( cache => {
+    //         // y ya q te fuiste a internet, guardalo en cache
+    //         caches.open( CACHE_DINAMIC ).then( cache => {
 
-                cache.put( e.request, res)
-                // la peticion, y q queremos regresar
+    //             cache.put( e.request, res)
+    //             // la peticion, y q queremos regresar
 
-                limpiarCache(CACHE_DINAMIC,5)
-                // por cada registro limpiaremos el cache
-            })
-            // devolvemos un clone, porq en put ya estamos devolviendo a res
-            // entonces da un error
-            return res.clone()
-        })
+    //             limpiarCache(CACHE_DINAMIC,5)
+    //             // por cada registro limpiaremos el cache
+    //         })
+    //         // devolvemos un clone, porq en put ya estamos devolviendo a res
+    //         // entonces da un error
+    //         return res.clone()
+    //     })
+    // })
+
+// estrategia network first
+
+    // const source = fetch( e.request ).then( res => {
+
+
+    //     if (!res) return caches.match( e.request )
+    //     // si da 404
+
+    //     caches.open( CACHE_DINAMIC )
+    //     .then( cache => {
+    //         cache.put( e.request, res)
+    //         limpiarCache(CACHE_DINAMIC,5)
+    //     })
+    //     return res.clone()
+    // }).catch( err => {
+    //     return caches.match( e.request )
+    // })
+
+
+
+
+// estrategia y network race
+
+    const source = new Promise(( resolve, reject ) => {
+
+        let rechazada = false
+
+        const itFailsOneTime = () => {
+
+            if (rechazada) {
+
+                // si las 2 vainas fallaron(fetch y cache)
+                // se entrara aqui
+
+                if (/\.(png|jpg)$/i.test( e.request.url )) {
+
+                    // si entra aqui, se tiene que devolver una imagen
+                    resolve( caches.match('/img/noimage.jpg'))
+
+                } else {
+
+                    reject('No se pudo resolver la peticion')
+                }
+
+            } else {
+                rechazada = true
+            }
+        }
+
+        fetch( e.request ).then( res => {
+
+             ( res.ok ) ? resolve(res) : itFailsOneTime()
+        }).catch( itFailsOneTime )
+        // si no hay internet, fallara y q se ejecute esa funcion de una vez
+
+        caches.match( e.request ).then( res => {
+
+            res ? resolve( res ) : itFailsOneTime()
+        }).catch( itFailsOneTime )
     })
+
 
 
     e.respondWith( source )
