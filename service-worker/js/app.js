@@ -1,7 +1,7 @@
 if ( navigator.serviceWorker ) {
 
     // navigator.serviceWorker.register('/sw.js')
-    navigator.serviceWorker.register('/sw4.js')
+    navigator.serviceWorker.register('/sw5.js')
     // .then( reg => {
         // setTimeout(() => {
             
