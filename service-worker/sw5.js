@@ -1,7 +1,7 @@
 // estategias de cache offline 2
 
 // const CACHE_NAME = 'prueba-1'
-const CACHE_STATIC = 'static-v2'
+const CACHE_STATIC = 'static-v4'
 // para nuestra app shell
 
 const CACHE_INMUTABLE = 'inmutable-v1'
@@ -68,11 +68,29 @@ self.addEventListener('install',event => {
 })
 
 
+// estatregia para borrar caches viejos cuando SE ACTIVE el sw
+self.addEventListener('activate', e => {
+
+
+    e.waitUntil(
+        caches.keys().then( keys => {
+
+            keys.forEach( key => {
+
+                // matcheamos los static
+                if( key !== CACHE_STATIC && key.includes('static') ) {
+
+                    return caches.delete(key)
+                }
+            })
+        })
+    )
+    // e.waitUntil()
+
+})
+
 
 self.addEventListener('fetch', e => {
-
-
-
 
 
 // estrategia cache with network fallback
@@ -101,7 +119,7 @@ self.addEventListener('fetch', e => {
             return res.clone()
         }).catch( err => {
 
-            // si me pide un html, le paso este offlne
+            // si me pide un html, le paso este offlne, se puede hacer con css y demas
             if( e.request.headers.get('accept').includes('text/html') ) {
 
                 return caches.match('/offline.html')
