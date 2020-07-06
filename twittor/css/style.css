@@ -11,6 +11,15 @@
     font-size: 16px;
     background-color: #dde1e2; 
     width: 100%;
+
+    /*  pwa things */
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+
+    /* esto quita el pull to refresh */
+    overscroll-behavior-y: contain;
+
 }
 
 /* Personalizados */

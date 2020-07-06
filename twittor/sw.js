@@ -1,7 +1,7 @@
 importScripts('js/sw-utils.js')
 // esto es algo solo de los sw
 
-const STATIC_CACHE = 'static-v2'
+const STATIC_CACHE = 'static-v3'
 const DINAMYC_CACHE = 'dinamyc-v1'
 const INMUTABLE_CACHE = 'inmutable-v1'
 
