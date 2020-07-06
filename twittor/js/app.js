@@ -1,6 +1,6 @@
 let url = window.location.href
 
-let swLocation = '/twittor/sw.js'
+let swLocation = '/learningpwa/twittor/sw.js'
 
 if ( navigator.serviceWorker ) {
 
