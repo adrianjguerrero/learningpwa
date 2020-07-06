@@ -6,8 +6,8 @@ const DINAMYC_CACHE = 'dinamyc-v1'
 const INMUTABLE_CACHE = 'inmutable-v1'
 
 const APP_SHELL = [
-    '/',
-    '/index.html',
+    // '/',
+    'index.html',
     'css/style.css',
     'img/favicon.ico',
     'img/avatars/hulk.jpg',
