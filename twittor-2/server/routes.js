@@ -25,6 +25,18 @@ router.get('/', function (req, res) {
 });
 
 
+router.post('/', function (req, res) {
+
+  const mensaje = {
+    mensaje: req.body.mensaje,
+    personaje: req.body.personaje
+  }
+
+  mensajes.push(mensaje)
+  res.json({ok:true,mensaje:mensaje});
+});
+
+
 
 
 module.exports = router;
