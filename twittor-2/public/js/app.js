@@ -140,6 +140,19 @@ postBtn.on('click', function() {
         return;
     }
 
+    data = {
+        mensaje: mensaje,
+        personaje: usuario
+    }
+
+    fetch('/api',{
+        method: 'POST',
+        headers: {
+            'Content-Type' : 'application/json'
+        },
+        body: JSON.stringify(data)
+    }).then( res => res.json()).then(res => console.log(res)).catch(console.log)
+
     crearMensajeHTML( mensaje, usuario );
 
 });

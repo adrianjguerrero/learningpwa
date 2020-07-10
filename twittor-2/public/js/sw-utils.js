@@ -44,14 +44,21 @@ function actualizaCacheStatico( staticCache, req, APP_SHELL_INMUTABLE ) {
 // network with cache fallback
 function manejoApiMensajes(cacheName, request) {
 
-    return fetch (request)
-    .then(res => {
-        if (res.ok) {
-            actualizaCacheDinamico(cacheName,request,res.clone())
-            return res
-        } else {
-            return caches.match(request)
-        }
-    })
-    .catch(caches.match(request))
+    if (request.clone().method === 'POST') {
+
+        return fetch(request)
+    }else{
+
+        return fetch (request)
+        .then(res => {
+            if (res.ok) {
+                actualizaCacheDinamico(cacheName,request,res.clone())
+                return res
+            } else {
+                return caches.match(request)
+            }
+        })
+        .catch(caches.match(request))
+    }
+
 }
