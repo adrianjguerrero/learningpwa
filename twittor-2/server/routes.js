@@ -9,9 +9,13 @@ const mensajes = [
     id:'.i.',
     personaje:'spiderman',
     mensaje: 'hoal'
+  },
+  {
+    id:'.i.',
+    personaje:'hulk',
+    mensaje: 'xD'
   }
 ]
-
 
 
 // Get mensajes
