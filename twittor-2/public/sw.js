@@ -1,5 +1,8 @@
 // imports
-importScripts('js/sw-utils.js');
+// no nos sirve ponerlo en el index porq el sw corre en una instancia distinta
+importScripts('https://cdn.jsdelivr.net/npm/pouchdb@7.2.1/dist/pouchdb.min.js')
+importScripts('js/sw-db.js')
+importScripts('js/sw-utils.js')
 
 
 const STATIC_CACHE    = 'static-v1';
@@ -18,7 +21,8 @@ const APP_SHELL = [
     'img/avatars/thor.jpg',
     'img/avatars/wolverine.jpg',
     'js/app.js',
-    'js/sw-utils.js'
+    'js/sw-utils.js',
+    // 'js/sw-db.js'
 ];
 
 const APP_SHELL_INMUTABLE = [
@@ -26,7 +30,8 @@ const APP_SHELL_INMUTABLE = [
     'https://fonts.googleapis.com/css?family=Lato:400,300',
     'https://use.fontawesome.com/releases/v5.3.1/css/all.css',
     'https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.css',
-    'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'
+    'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js',
+    'https://cdn.jsdelivr.net/npm/pouchdb@7.2.1/dist/pouchdb.min.js'
 ];
 
 
@@ -76,8 +81,11 @@ self.addEventListener('activate', e => {
 self.addEventListener( 'fetch', e => {
 
     let respuesta
+    // console.log(e.request.method)
+
 
     if (e.request.url.includes('/api')) {
+
 
         respuesta = manejoApiMensajes(DYNAMIC_CACHE,e.request)
     } else {

@@ -44,7 +44,18 @@ function actualizaCacheStatico( staticCache, req, APP_SHELL_INMUTABLE ) {
 // network with cache fallback
 function manejoApiMensajes(cacheName, request) {
 
+    
     if (request.clone().method === 'POST') {
+        console.log(request.clone().method)
+
+        // obtenemos lo q se esta haciendo post
+
+            request.clone().json()
+            .then( body => {
+                console.log(body)
+                guardarMensaje(body)
+            })
+
 
         return fetch(request)
     }else{
