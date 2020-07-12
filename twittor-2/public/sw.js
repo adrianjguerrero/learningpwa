@@ -77,7 +77,6 @@ self.addEventListener('activate', e => {
 
 
 
-
 self.addEventListener( 'fetch', e => {
 
     let respuesta
@@ -118,3 +117,22 @@ self.addEventListener( 'fetch', e => {
 });
 
 
+// tareas asincronas
+
+self.addEventListener('sync', e => {
+
+    // se dispara cuando haya internet
+
+    console.log('SW: sync');
+
+    if ( e.tag === 'nuevo-post') {
+
+        // postear a db cuando hay conexion
+
+        
+
+        console.log('waiteando');
+        // haremos que haga el posteo al "servidor"
+        e.waitUntil( postearMensaje() )
+    }
+})

@@ -46,18 +46,23 @@ function manejoApiMensajes(cacheName, request) {
 
     
     if (request.clone().method === 'POST') {
-        console.log(request.clone().method)
 
-        // obtenemos lo q se esta haciendo post
+        if(self.registration.sync){
+            
+            console.log(request.clone().method)
+    
+            // obtenemos lo q se esta haciendo post
+    
+                return request.clone().json()
+                .then( body => {
+                    console.log(body)
+                    return guardarMensaje(body)
+                })
+        } else {
+            return fetch(request)
+        }
 
-            request.clone().json()
-            .then( body => {
-                console.log(body)
-                guardarMensaje(body)
-            })
 
-
-        return fetch(request)
     }else{
 
         return fetch (request)
