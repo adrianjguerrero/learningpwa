@@ -175,3 +175,43 @@ function obtenerMensajes() {
 }
 
 obtenerMensajes()
+
+
+// detectar cambios de internet
+
+function isOnline() {
+
+    if (navigator.onLine) {
+
+        // hay conexion 
+        // console.log('hay internet')
+
+        mdtoast('Online',{
+            interation: true,
+            interationTimeOut: 1000,
+            actionText: 'Ok',
+            type: 'success',
+            action: function(){
+                this.hide(); // this is the toast instance
+            }
+        })
+
+    } else {
+
+        // console.log('no hay internet')
+
+        mdtoast('Offline',{
+            interation: true,
+            actionText: 'fuck',
+            type: 'danger',
+            action: function(){
+                this.hide(); // this is the toast instance
+            }
+        })
+    }
+}
+
+window.addEventListener('online', isOnline)
+window.addEventListener('offline', isOnline)
+
+isOnline()
