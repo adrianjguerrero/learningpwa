@@ -33,6 +33,8 @@ var modalAvatar = $('#modal-avatar');
 var avatarBtns  = $('.seleccion-avatar');
 var txtMensaje  = $('#txtMensaje');
 
+var btnActivada = $('.btn-noti-activadas')
+var btnDesactivada = $('.btn-noti-desactivadas')
 // El usuario, contiene el ID del hÃ©roe seleccionado
 var usuario;
 
@@ -250,4 +252,20 @@ function notificarme() {
     }
 }
 
-notificarme()
+// notificarme()
+
+
+function verificaSub(activada) {
+
+    if (activada) {
+
+        btnActivada.removeClass('oculto')
+        btnDesactivada.addClass('oculto')
+
+    } else {
+
+        btnDesactivada.removeClass('oculto')
+        btnActivada.addClass('oculto')
+
+    }
+}
