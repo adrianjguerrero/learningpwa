@@ -215,3 +215,39 @@ window.addEventListener('online', isOnline)
 window.addEventListener('offline', isOnline)
 
 isOnline()
+
+function enviarNotificacion() {
+
+    const notificacionOptions = {
+        body: 'hola',
+        icon: 'img/icons/icon-72x72.png'
+    }
+    const notification = new Notification('Titulito',notificacionOptions)
+
+    notification.onclick = () => console.log('cleck');
+}
+
+function notificarme() {
+
+    if (window.Notification) {
+
+        if (Notification.permission === 'granted') {
+
+            // new Notification('HOLAAAAAAAAAA')
+            enviarNotificacion()
+        } else if (Notification.permission !== 'denied' || Notification.permission === 'default' ) {
+
+            Notification.requestPermission( function(permission){
+                enviarNotificacion()
+                // new Notification('VAMOS CARAJOOOOOOOOOOO')
+            }) 
+        }
+
+    }
+    else {
+        console.log('este navegador no soporta notificaciones');
+        return 
+    }
+}
+
+notificarme()
