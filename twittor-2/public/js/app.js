@@ -2,6 +2,7 @@
 var url = window.location.href;
 var swLocation = '/twittor/sw.js';
 
+var serviceWorkerRec;
 
 if ( navigator.serviceWorker ) {
 
@@ -10,8 +11,21 @@ if ( navigator.serviceWorker ) {
         swLocation = '/sw.js';
     }
 
+    window.addEventListener('load', function() {
 
-    navigator.serviceWorker.register( swLocation );
+        navigator.serviceWorker.register( swLocation )
+        .then(function(reg) {
+
+            serviceWorkerRec = reg
+
+            // para ver si estamos subscrito a las notificaciones
+            serviceWorkerRec.pushManager.getSubscription()
+            .then(verificaSub)
+
+
+        });
+    })
+
 }
 
 
@@ -270,6 +284,7 @@ function verificaSub(activada) {
     }
 }
 
+// obtenterkey para las notificaciones
 function getPublicKey() {
 
     // fetch('api/key').then(res => res.json()).then(res => console.log(res))
@@ -281,4 +296,28 @@ function getPublicKey() {
 
 }
 
-getPublicKey().then(console.log)
+// getPublicKey().then(console.log)
+
+btnDesactivada.on('click', function () {
+
+    if (!serviceWorkerRec) {
+        console.log('no hay registro de sw')
+    } else {
+
+        // toda esta wea genera una wea en el servidor dependiendo del navegador
+        // q luego como q se matchea con el privatekey del server o.o wea medio completa
+        getPublicKey().then(function (key) {
+            
+            serviceWorkerRec.pushManager.subscribe({
+                userVisibleOnly:true,
+                applicationServerKey: key
+            }).then( res => res.toJSON())
+            .then(function (suscripcion) {
+                
+                 console.log(suscripcion);
+                 verificaSub(suscripcion)
+            })
+        })
+    }
+
+})
