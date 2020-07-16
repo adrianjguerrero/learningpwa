@@ -52,7 +52,8 @@ router.get('/key', function (req, res) {
 
   const key = push.getKey()
 
-  res.json(key);
+  // asi se manda como una wea rara
+  res.send(key);
 });
 
 

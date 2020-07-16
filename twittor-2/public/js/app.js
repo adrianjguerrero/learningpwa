@@ -269,3 +269,16 @@ function verificaSub(activada) {
 
     }
 }
+
+function getPublicKey() {
+
+    // fetch('api/key').then(res => res.json()).then(res => console.log(res))
+
+    return fetch('api/key')
+    .then(res => res.arrayBuffer())
+    // luego de arraybuffer, retornar como uint8array
+    .then(key => new Uint8Array(key))
+
+}
+
+getPublicKey().then(console.log)
