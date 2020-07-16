@@ -66,7 +66,15 @@ router.get('/key', function (req, res) {
 // para enviar notificaciones, lo normal no es un rest, suele q ser algo q corre en el back
 router.post('/push', function (req, res) {
 
-  res.json('subscribe');
+
+  const notificacion = {
+    titulo: req.body.titulo,
+    mensaje: req.body.mensaje,
+    usuario: req.body.usuario
+  }
+
+  push.sendPush(notificacion)
+  res.json(notificacion);
 });
 
 

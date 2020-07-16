@@ -3,6 +3,14 @@ const fs = require('fs')
 const urlbase64 = require('urlsafe-base64')
 const vapid = require('./vapid.json')
 
+const webpush = require('web-push');
+
+webpush.setVapidDetails(
+    'mailto:adrianjguerrero87@gmail.com',
+    vapid.publicKey,
+    vapid.privateKey
+  );
+
 
 // simulacion de db lol
 const suscripciones = require('./subs-db.json')
@@ -19,4 +27,13 @@ module.exports.addSubscription = (subscription) =>{
 
     console.log(suscripciones);
 
+}
+
+module.exports.sendPush = (post) => {
+    // mandando notificaciones
+
+    suscripciones.forEach( (sub,i)=> {
+
+        webpush.sendNotification(sub, post.titulo)
+    })
 }
