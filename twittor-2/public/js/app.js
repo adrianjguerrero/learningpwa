@@ -271,6 +271,8 @@ function notificarme() {
 
 function verificaSub(activada) {
 
+    console.log(activada);
+
     if (activada) {
 
         btnActivada.removeClass('oculto')
@@ -314,8 +316,14 @@ btnDesactivada.on('click', function () {
             }).then( res => res.toJSON())
             .then(function (suscripcion) {
                 
-                 console.log(suscripcion);
-                 verificaSub(suscripcion)
+              fetch('api/subscribe',{
+                  method: 'POST',
+                  headers: {'Content-Type': 'application/json'},
+                  body: JSON.stringify(suscripcion)
+              }).then(verificaSub)
+              .catch(console.log)
+
+              
             })
         })
     }

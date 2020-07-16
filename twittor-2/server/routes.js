@@ -40,6 +40,12 @@ router.post('/', function (req, res) {
 
 router.post('/subscribe', function (req, res) {
 
+
+  const subscripcion = req.body
+
+  console.log(subscripcion)
+
+  push.addSubscription(subscripcion)
   res.json('subscribe');
 });
 

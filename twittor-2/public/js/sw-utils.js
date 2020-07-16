@@ -44,10 +44,16 @@ function actualizaCacheStatico( staticCache, req, APP_SHELL_INMUTABLE ) {
 // network with cache fallback
 function manejoApiMensajes(cacheName, request) {
 
+    if(request.url.indexOf('api/key') >= 0 || request.url.indexOf('api/subscribe') >= 0) {
+        // para q no almacene las peticiones a llave
+        return fetch(request)
+    }
+
     
-    if (request.clone().method === 'POST') {
+    else if (request.clone().method === 'POST') {
 
         if(self.registration.sync){
+            // si el navegador soporta sync, guardare
             
             console.log(request.clone().method)
     
