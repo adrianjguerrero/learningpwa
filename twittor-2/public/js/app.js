@@ -321,11 +321,25 @@ btnDesactivada.on('click', function () {
                   headers: {'Content-Type': 'application/json'},
                   body: JSON.stringify(suscripcion)
               }).then(verificaSub)
-              .catch(console.log)
+              .catch(cancelarSub)
 
               
             })
         })
     }
 
+})
+
+function cancelarSub() {
+
+    // para quitar las notificaciones
+    serviceWorkerRec.pushManager.getSubscription()
+    .then(sub => {
+        sub.unsubscribe()
+        .then( () => verificaSub(false))
+    })
+}
+
+btnActivada.on('click',function() {
+    cancelarSub()
 })
