@@ -1,7 +1,7 @@
 // Routes.js - Módulo de rutas
-var express = require('express');
-var router = express.Router();
-
+const express = require('express');
+const router = express.Router();
+const push = require('./push')
 
 
 const mensajes = [
@@ -36,6 +36,30 @@ router.post('/', function (req, res) {
 
   console.log(mensajes);
   res.json({ok:true,mensaje:mensaje});
+});
+
+router.post('/subscribe', function (req, res) {
+
+  res.json('subscribe');
+});
+
+router.get('/key', function (req, res) {
+
+  // las vapidkeys son un juego de llaves q nos permiten enviar notificaciones
+
+  // hay q tener cuidado, cada q generamos vapidkeys las suscripciones anteriores quedan nulas
+  // en este proyecto las generamos con un comando de npm
+
+  const key = push.getKey()
+
+  res.json(key);
+});
+
+
+// para enviar notificaciones, lo normal no es un rest, suele q ser algo q corre en el back
+router.post('/push', function (req, res) {
+
+  res.json('subscribe');
 });
 
 
