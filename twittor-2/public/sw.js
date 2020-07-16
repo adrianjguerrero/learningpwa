@@ -144,10 +144,21 @@ self.addEventListener('sync', e => {
 self.addEventListener('push', e => {
 
     // console.log(e)
-    console.log(e.data.text())
+    
+    const data = JSON.parse( e.data.text() )
 
-    const title = e.data.text()
-    const options = {}
+    console.log(data)
+    
+    const title = data.titulo
+    const options = {
+        body: data.mensaje,
+        icon: `img/avatars/${data.usuario}.jpg`,
+        badge: 'img/favicon.ico',
+        image: 'https://vignette.wikia.nocookie.net/memes-pedia/images/4/47/Download-0.jpg/revision/latest/top-crop/width/360/height/450?cb=20200528183809&path-prefix=es',
+        vibrate: [150,150,150,150,75,75,150,150,150,150,450],
+        openUrl: '/'
+
+    }
 
     // esperamos a la notificacion
     e.waitUntil(self.registration.showNotification(title, options))

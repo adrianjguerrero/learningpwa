@@ -34,6 +34,6 @@ module.exports.sendPush = (post) => {
 
     suscripciones.forEach( (sub,i)=> {
 
-        webpush.sendNotification(sub, post.titulo)
+        webpush.sendNotification(sub, JSON.stringify(post))
     })
 }
