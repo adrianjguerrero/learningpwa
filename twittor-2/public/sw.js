@@ -138,3 +138,17 @@ self.addEventListener('sync', e => {
         e.waitUntil( postearMensaje() )
     }
 })
+
+// escuchar push
+
+self.addEventListener('push', e => {
+
+    // console.log(e)
+    console.log(e.data.text())
+
+    const title = e.data.text()
+    const options = {}
+
+    // esperamos a la notificacion
+    e.waitUntil(self.registration.showNotification(title, options))
+})
