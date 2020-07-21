@@ -13,7 +13,7 @@ webpush.setVapidDetails(
 
 
 // simulacion de db lol
-const suscripciones = require('./subs-db.json')
+let suscripciones = require('./subs-db.json')
 
 // es mejor encodear las vainas, asi van mas seguro
 module.exports.getKey = () => urlbase64.decode( vapid.publicKey)
@@ -32,8 +32,28 @@ module.exports.addSubscription = (subscription) =>{
 module.exports.sendPush = (post) => {
     // mandando notificaciones
 
+    const notificacionesEnviadas = []
     suscripciones.forEach( (sub,i)=> {
 
-        webpush.sendNotification(sub, JSON.stringify(post))
+
+        const pushProm = webpush.sendNotification(sub, JSON.stringify(post))
+        .then( console.log('notificacion enviada'))
+        .catch( err => {
+            console.log('notificacion fallo')
+
+            if ( err.statusCode == 410 ) { /* gone, ya no existe */
+
+                suscripciones[i].borrar = true
+            }
+        })
+
+        notificacionesEnviadas.push(pushProm)
+    })
+
+    Promise.all(notificacionesEnviadas).then( () => {
+
+        suscripciones = suscripciones.filter(sub => !sub.borrar)
+
+        fs.writeFileSync(`${__dirname}/subs-db.json`, JSON.stringify(suscripciones))
     })
 }
