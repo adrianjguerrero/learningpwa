@@ -156,10 +156,44 @@ self.addEventListener('push', e => {
         badge: 'img/favicon.ico',
         image: 'https://vignette.wikia.nocookie.net/memes-pedia/images/4/47/Download-0.jpg/revision/latest/top-crop/width/360/height/450?cb=20200528183809&path-prefix=es',
         vibrate: [150,150,150,150,75,75,150,150,150,150,450],
-        openUrl: '/'
+        openUrl: '/',
+        data:{
+            url: 'https://google.com',
+            id:  data.usuario 
+            // aqui puede ir lo q sea q queramos
+        },
+        actions:[
+            {
+                action: 'thor-action',
+                title: 'Thor',
+                icon: 'img/avatars/thor.jpg'
+            },
+            {
+                action: 'ironman-action',
+                title: 'Ironman',
+                icon: 'img/avatars/ironman.jpg'
+            }
+
+        ]
 
     }
 
     // esperamos a la notificacion
     e.waitUntil(self.registration.showNotification(title, options))
+})
+
+self.addEventListener('notificationclose', e => {
+    console.log('notificacion cerrada',e);
+})
+
+self.addEventListener('notificationclick', e => {
+
+    const notificacion = e.notification
+
+    const action = e.action
+
+    console.log({notificacion,action});
+
+    notificacion.close()
+
 })
