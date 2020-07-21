@@ -158,7 +158,8 @@ self.addEventListener('push', e => {
         vibrate: [150,150,150,150,75,75,150,150,150,150,450],
         openUrl: '/',
         data:{
-            url: 'https://google.com',
+            // url: 'https://google.com',
+            url: '/',
             id:  data.usuario 
             // aqui puede ir lo q sea q queramos
         },
@@ -194,6 +195,25 @@ self.addEventListener('notificationclick', e => {
 
     console.log({notificacion,action});
 
-    notificacion.close()
+    // agarrar todos los tabs abiertos del mismo sitio
+    const resp = clients.matchAll()
+    .then(clientes => {
+
+        // vemos si hay alguno activo
+        let client = clientes.find( c => c.visibilityState === 'visible')
+
+        if (client !== undefined) {
+            client.navigate(notificacion.data.url)
+            client.focus()
+        } else {
+            clients.openWindow(notificacion.data.url)
+
+        }
+        return notificacion.close()
+    })
+
+    // hace referencia a todos los tabs
+
+    e.waitUntil(resp)
 
 })
